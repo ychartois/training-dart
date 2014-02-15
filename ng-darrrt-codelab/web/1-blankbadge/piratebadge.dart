@@ -8,5 +8,23 @@ import 'package:angular/angular.dart';
 import 'dart:mirrors';
 
 void main() {
-  ngBootstrap();
+  ngBootstrap(module: new Module()..type(BadgesController));
+}
+
+@NgController(
+    selector: '[badges]',
+    publishAs: 'ctrl')
+class BadgesController {
+
+  String name = '';
+
+  BadgesController();
+  
+  bool get inputIsNotEmpty => !name.trim().isEmpty;
+  String get label => inputIsNotEmpty ? "Arrr! Write yer name!" : "Aye! Gimme a name!";
+
+  generateName() {
+    name = 'Anne Bonney';
+  }
+
 }
