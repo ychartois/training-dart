@@ -3,6 +3,9 @@
 // BSD-style license that can be found in the LICENSE file.
 import 'dart:html';
 import 'dart:math' show Random;
+import 'dart:convert' show JSON;
+
+final String TREASURE_KEY = 'pirateName';
 
 ButtonElement genButton;
 
@@ -11,6 +14,7 @@ void main() {
   querySelector('#inputName').onInput.listen(updateBadge);
   genButton = querySelector('#generateButton');
   genButton.onClick.listen(generateBadge);
+  setBadgeName(getBadgeNameFromStorage());
 }
 
 void updateBadge(Event e) { 
@@ -26,8 +30,22 @@ void updateBadge(Event e) {
 }
 
 void setBadgeName(PirateName newName) {
+  if (newName == null) {
+    return;
+  }
   querySelector('#badgeName').text = newName.pirateName;
-} 
+  window.localStorage[TREASURE_KEY] = newName.jsonString;
+}
+ 
+PirateName getBadgeNameFromStorage() {
+  String storedName = window.localStorage[TREASURE_KEY];
+  if (storedName != null) {
+    return new PirateName.fromJSON(storedName);
+  } else {
+    return null;
+  }
+}
+
 
 void generateBadge(Event e) {
   setBadgeName(new PirateName());
@@ -58,8 +76,15 @@ class PirateName {
     }
   }
   
+  PirateName.fromJSON(String jsonString) {
+    Map storedName = JSON.decode(jsonString);
+    _firstName = storedName['f'];
+    _appellation = storedName['a'];
+  }
+  
   String get pirateName =>
       _firstName.isEmpty ? '' : '$_firstName the $_appellation';
   
+  String get jsonString => JSON.encode({"f": _firstName, "a": _appellation});
 }
 
