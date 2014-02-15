@@ -5,7 +5,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html ng-app>
   <head>
     <meta charset="utf-8">
     <title>Pirate badge</title>
@@ -15,14 +15,16 @@
     <h1>Pirate badge</h1>
     
     <div class="widgets">
-      TO DO: Put the UI widgets here.
+      <div>
+  <input type="text" id="inputName" maxlength="15" ng-model="name">
+</div>
     </div>
     <div class="badge">
       <div class="greeting">
         Arrr! Me name is
       </div>
       <div class="name">
-        <span id="badgeName"> </span>
+        <span id="badgeName"> {{name}}</span>
       </div>
     </div>
     
